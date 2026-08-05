@@ -1,0 +1,13 @@
+.myInput{
+    padding: 4px 8px;
+    font-size: 13px;
+    width: 800px;
+    margin-top: 10px;
+    /* Оранжевая цветовая гамма */
+    color: #d84315; /* Темно-оранжевый текст */
+    background-color: #fff3e0; /* Очень светлый апельсиновый фон */
+    border: 1px solid #ff9800; /* Основная оранжевая рамка */
+    border-radius: 4px; /* Аккуратное скругление углов */
+    
+    outline: none; /* Убираем стандартную синюю обводку браузера */
+}
