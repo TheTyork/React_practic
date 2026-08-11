@@ -8,6 +8,7 @@ import MyInput from "./Components/UI/input/MyInput";
 import PostForm from "./Components/PostForm";
 import MySelect from "./Components/UI/select/MySelect";
 import PostFilter from "./Components/PostFilter";
+import MyModal from "./Components/UI/modal/MyModal";
 
 function App() {
   const [posts, setPosts] = useState([
@@ -20,11 +21,11 @@ function App() {
   ]);
 
   // const bodyInputRef = useRef()
-  const [filter, setFilter] = useState({sort: '', query: ''})
-
-
+  const [filter, setFilter] = useState({ sort: "", query: "" });
+const [modal, setModal] = useState(false)
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
+    setModal(false)
   };
 
   const sortedPosts = useMemo(() => {
@@ -49,18 +50,17 @@ function App() {
 
   return (
     <div className="App">
-      <PostForm create={createPost} />
+      <MyButton onClick = {() => setModal(true)}>Создать пост</MyButton>
+      <MyModal visible={modal} setVisible={setModal}>
+        <PostForm create={createPost} />
+      </MyModal>
       <hr style={{ margin: "15px 0" }} />
       <PostFilter filter={filter} setFilter={setFilter} />
-      {sortedAndSearchPosts.length !== 0 ? (
-        <Postlist
-          remove={removePost}
-          posts={sortedAndSearchPosts}
-          title="Список постов 1"
-        />
-      ) : (
-        <h3 style={{ textAlign: "center" }}>Нет постов</h3>
-      )}
+      <Postlist
+        remove={removePost}
+        posts={sortedAndSearchPosts}
+        title="Список постов 1"
+      />
     </div>
   );
 }
