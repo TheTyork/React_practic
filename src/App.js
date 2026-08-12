@@ -12,13 +12,17 @@ import MyModal from "./Components/UI/modal/MyModal";
 import { usePosts } from "./hooks/usePosts";
 import PostService from "./API/PosrService";
 import Loader from "./Components/UI/loader/Loader";
+import { useFetching } from "./hooks/useFetching";
 
 function App() {
   const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
   const sortedAndSearchPosts = usePosts(posts, filter.sort, filter.query);
-  const [isPostsLoading, setPostsLoading] = useState(false);
+  const [fetchPosts, isPostsLoading, PostError] = useFetching(async () => {
+    const posts = await PostService.getAll();
+    setPosts(posts);
+  });
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
@@ -33,13 +37,6 @@ function App() {
     fetchPosts();
   }, [filter]);
 
-  async function fetchPosts() {
-    setPostsLoading(true);
-    const posts = await PostService.getAll();
-    setPosts(posts);
-    setPostsLoading(false);
-  }
-
   return (
     <div className="App">
       <MyButton onClick={fetchPosts}>Заросить посты</MyButton>
@@ -49,8 +46,12 @@ function App() {
       </MyModal>
       <hr style={{ margin: "15px 0" }} />
       <PostFilter filter={filter} setFilter={setFilter} />
+      
+      {PostError && 
+      <h1>Произошла ошибка</h1>}
+      
       {isPostsLoading ? (
-        <div style={{display: 'flex', justifyContent: 'center'} }>
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <Loader />
         </div>
       ) : (
