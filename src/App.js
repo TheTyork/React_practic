@@ -14,6 +14,7 @@ import PostService from "./API/PosrService";
 import Loader from "./Components/UI/loader/Loader";
 import { useFetching } from "./hooks/useFetching";
 import { getPageCount, getPagesArray } from "./utils/page";
+import MyPagination from "./Components/UI/pagination/MyPagination";
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -23,7 +24,6 @@ function App() {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const sortedAndSearchPosts = usePosts(posts, filter.sort, filter.query);
-  let pagesArray = getPagesArray(totalPages);
 
   const [fetchPosts, isPostsLoading, PostError] = useFetching(
     async (limit, page) => {
@@ -54,7 +54,6 @@ function App() {
 
   return (
     <div className="App">
-      <MyButton onClick={fetchPosts}>Заросить посты</MyButton>
       <MyButton onClick={() => setModal(true)}>Создать пост</MyButton>
       <MyModal visible={modal} setVisible={setModal}>
         <PostForm create={createPost} />
@@ -75,17 +74,11 @@ function App() {
           title="Список постов 1"
         />
       )}
-      <div className="page_wrapper">
-        {pagesArray.map((p) => (
-          <span
-            onClick={() => {changePage(p)}}
-            key={p}
-            className={page === p ? "page page_curent" : "page"}
-          >
-            {p}
-          </span>
-        ))}
-      </div>
+      <MyPagination
+        changePage={changePage}
+        page={page}
+        totalPages={totalPages}
+      />
     </div>
   );
 }
