@@ -5,10 +5,16 @@ import Posts from "../pages/Posts";
 import PostIdPage from "../pages/PostIdPage";
 import { PrivateRoutes, PublicRoutes, routes } from "../router/rutes";
 import { AuthContext } from "../context/context";
+import Loader from "./UI/loader/Loader";
 
 const AppRouter = () => {
-  const {isAuth} = useContext(AuthContext);
+  const {isAuth, isLoading} = useContext(AuthContext);
   console.log(isAuth)
+
+  if (isLoading) {
+    return <Loader/>
+  }
+
   return isAuth ? (
     <Routes>
       {PrivateRoutes.map((route) => (
