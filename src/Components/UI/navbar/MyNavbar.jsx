@@ -13,7 +13,7 @@ const logout = () => {
 
   return (
     <div className="navbar">
-      {isAuth ? <MyButton onClick = {() => logout} >Выйти</MyButton> : <div></div>} 
+      {isAuth ? <MyButton onClick = {() => logout()} >Выйти</MyButton> : <div></div>} 
       <div className=".navbar__links">
         <Link to="/about">Информация</Link>
         <Link to="/posts">Посты</Link>
